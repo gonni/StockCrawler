@@ -9,6 +9,7 @@ lazy val root = (project in file("."))
 
 libraryDependencies ++= Seq(
   "dev.zio"       %% "zio"                 % "2.0.19",
+  "dev.zio"       %% "zio-streams"          % "2.0.13",
   "dev.zio"       %% "zio-json"            % "0.6.2",
   "dev.zio"       %% "zio-http"            % "3.0.0-RC2",
   "io.getquill"   %% "quill-zio"           % "4.8.0",
@@ -18,6 +19,7 @@ libraryDependencies ++= Seq(
   "dev.zio"       %% "zio-config"          % "4.0.0-RC16",
   "dev.zio"       %% "zio-config-typesafe" % "4.0.0-RC16",
   "dev.zio"       %% "zio-config-magnolia" % "4.0.0-RC16"
+
 )
 
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.10"
