@@ -8,7 +8,6 @@ import io.getquill.*
 import io.getquill.jdbczio.Quill
 import zio.*
 
-
 case class StockItem(
                       //                    id: Long,
                       itemCd: String,
@@ -26,33 +25,34 @@ object StockRepo extends ZIOAppDefault{
   import io.getquill.SnakeCase
 
   val program = for {
-    repo <- ZIO.service[StockRepo]
-    _ <- repo.create(StockItem("TEST03", "YGX", "KOSPI", "BIG3"))
-    _ <- repo.create(StockItem("TEST02", "YGC", "KOSDAQ", "BIG2"))
+    repo <- ZIO.service[StockItempRepo]
+    _ <- repo.create(StockItem("TEST05", "YGX", "KOSPI", "BIG3"))
+    _ <- repo.create(StockItem("TEST06", "YGC", "KOSDAQ", "BIG2"))
   } yield ()
 
 
   override def run: ZIO[Any with ZIOAppArgs with Scope, Any, Any] =
     program.provide(
-      StockStockItemRepoLive.layer,
+      StockItemRepo.live,
       Quill.Mysql.fromNamingStrategy(io.getquill.SnakeCase),
       Quill.DataSource.fromPrefix("mydbConf")
     )
 }
 
 
-trait StockRepo {
+trait StockItempRepo {
   def create(stockItem: StockItem): Task[Long]
+  def batchInsert(stockItems: List[StockItem]): Task[List[Long]]
 //  def update(itemCd: String, op:StockItem => StockItem): Task[StockItem]
 //  def delete(itemCd: String): Task[StockItem]
   def getById(itemCd: String): Task[Option[StockItem]]
   def get: Task[List[StockItem]]
 }
 
-class StockItemRepoLive(quill: Quill.Mysql[SnakeCase]) extends StockRepo {
+class StockItemRepoImpl(quill: Quill.Mysql[SnakeCase]) extends StockItempRepo {
   import quill.*
 
-  inline given schema: SchemaMeta[StockItem] = schemaMeta[StockItem]("STOCK_ITEMS")
+  inline given schema: SchemaMeta[StockItem] = schemaMeta[StockItem]("STOCK_ITEMS3")
 //  inline given instMeta: InsertMeta[StockItem] = insertMeta[StockItem](_.itemCd)
 //  inline given upMeta: UpdateMeta[StockItem] = updateMeta[StockItem](_.itemCd)
 
@@ -62,6 +62,12 @@ class StockItemRepoLive(quill: Quill.Mysql[SnakeCase]) extends StockRepo {
         .insertValue(lift(stockItem))
     }
 
+  override def batchInsert(stockItems: List[StockItem]): Task[List[Long]] = {
+    val a = quote {
+      liftQuery(stockItems).foreach(e => query[StockItem].insertValue(e))
+    }
+    run(a)
+  }
 //  override def update(itemCd: String, op: StockItem => StockItem): Task[StockItem] = for {
 //    current <- getById(id)
 //  }
@@ -76,11 +82,13 @@ class StockItemRepoLive(quill: Quill.Mysql[SnakeCase]) extends StockRepo {
 
   override def get: Task[List[StockItem]] =
     run(query[StockItem])
+
+
 }
 
-object StockStockItemRepoLive {
-  val layer = ZLayer{
-    ZIO.service[Quill.Mysql[SnakeCase]].map(quill => StockItemRepoLive(quill))
+object StockItemRepo {
+  val live = ZLayer{
+    ZIO.service[Quill.Mysql[SnakeCase]].map(quill => StockItemRepoImpl(quill))
   }
 
 }
