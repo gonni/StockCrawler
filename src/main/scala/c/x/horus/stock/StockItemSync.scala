@@ -12,11 +12,12 @@ import java.util.Scanner
 
 object StockItemSync {
 
+  // Sample
   def readCsvFile() = {
     val reader = CSVReader.open(new File("res/all_stock_2023_utf8.csv"))
-    println(reader.readNext().head.mkString(","))
-    println(reader.readNext().head.mkString(","))
-    println(reader.readNext().head.mkString(","))
+    println(reader.readNext().get.mkString(","))
+    println(reader.readNext().get.mkString(","))
+    println(reader.readNext().get.mkString(","))
     reader.close()
   }
 
@@ -47,7 +48,7 @@ object StockItemSync {
   }
 
 
-//  def main(args: Array[String]): Unit = {
-//    readCsvFile()
-//  }
+  def main(args: Array[String]): Unit = {
+    readCsvFile()
+  }
 }
