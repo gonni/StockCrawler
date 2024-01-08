@@ -23,3 +23,4 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.10"
+libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "3.1.1"

@@ -52,7 +52,7 @@ trait StockItempRepo {
 class StockItemRepoImpl(quill: Quill.Mysql[SnakeCase]) extends StockItempRepo {
   import quill.*
 
-  inline given schema: SchemaMeta[StockItem] = schemaMeta[StockItem]("STOCK_ITEMS3")
+  inline given schema: SchemaMeta[StockItem] = schemaMeta[StockItem]("STOCK_ITEMS")
 //  inline given instMeta: InsertMeta[StockItem] = insertMeta[StockItem](_.itemCd)
 //  inline given upMeta: UpdateMeta[StockItem] = updateMeta[StockItem](_.itemCd)
 
