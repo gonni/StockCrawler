@@ -32,7 +32,7 @@ object Csv2DbZioApp extends ZIOAppDefault {
   val app = for {
     reader <- ZIO.service[CsvFileService]
     csv <- reader.getCsvFileReader()
-    repo <- ZIO.service[StockItempRepo]
+    repo <- ZIO.service[StockItemRepo]
     res <- repo.batchInsert(csv.toStream.map(row =>
       StockItem(row.head, row(1), row(2), row(3))).toList)
   } yield res.size
