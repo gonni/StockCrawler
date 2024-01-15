@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
   "io.getquill"   %% "quill-zio"           % "4.8.0",
   "io.getquill"   %% "quill-jdbc-zio"      % "4.8.0",
   "com.h2database" % "h2"                  % "2.2.224",
-  "mysql" % "mysql-connector-java" % "8.0.27",
+  "mysql" % "mysql-connector-java" % "8.0.33",
   "dev.zio"       %% "zio-config"          % "4.0.0-RC16",
   "dev.zio"       %% "zio-config-typesafe" % "4.0.0-RC16",
   "dev.zio"       %% "zio-config-magnolia" % "4.0.0-RC16"
