@@ -1,7 +1,7 @@
-package c.x.horus.api
+package c.x.horus.sample.httpserver
+import zio.json.*
 
 import java.util.UUID
-import zio.json.*
 
 case class User(name: String, age: Int)
 
